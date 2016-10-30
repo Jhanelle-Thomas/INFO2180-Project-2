@@ -57,6 +57,8 @@ $(document).ready(function() {
 		positions = shuffle(positions);
 		order();
 		shuff = true;
+		empty = [300, 300];
+		movable();
 	});
 	
 	/*
@@ -64,18 +66,49 @@ $(document).ready(function() {
 	correct positions
 	*/
 	order();
-	setBackground();	
+	setBackground();
 	
 	for(var v = 0; v < pieces.length; v++) {
 		pieces[v].addEventListener("click", function() {
-			if (shuff) {
+			if (shuff && $(this).hasClass("movablepiece")) {
 				var temp = [this.offsetTop, this.offsetLeft]
 				this.style.left = empty[1] + "px";
 				this.style.top = empty[0] + "px";
 				empty = temp;
+				movable();
 			}
 		});
 	}
 	
-	
+	/*
+	Checks if the puzzle piece can be moved and adds the movablepiece class
+	*/
+	function movable() {
+		for(var v = 0; v < pieces.length; v++) {
+			if ($(pieces[v]).hasClass("movablepiece")) {
+				$(pieces[v]).removeClass( "movablepiece" );
+			}			
+		}
+		for(var v = 0; v < pieces.length; v++) {
+			if (pieces[v].offsetTop == empty[0] && pieces[v].offsetLeft - 100 == empty[1]) {
+				$(pieces[v]).addClass("movablepiece");
+			}
+			else if (pieces[v].offsetTop == empty[0] && pieces[v].offsetLeft + 100 == empty[1]) {
+				$(pieces[v]).addClass("movablepiece");
+			}
+			
+			if (pieces[v].offsetLeft == empty[1] && pieces[v].offsetTop - 100 == empty[0]) {
+				$(pieces[v]).addClass("movablepiece");
+			}
+			else if (pieces[v].offsetLeft == empty[1] && pieces[v].offsetTop + 100 == empty[0]) {
+				$(pieces[v]).addClass("movablepiece");
+			}
+			
+			/*
+			if (pieces[v].offsetTop == empty[0] || pieces[v].offsetLeft == empty[1]) {
+				$(pieces[v]).addClass("movablepiece");
+			}
+			*/
+		}
+	}	
 });
