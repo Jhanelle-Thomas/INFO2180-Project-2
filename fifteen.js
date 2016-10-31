@@ -70,11 +70,70 @@ $(document).ready(function() {
 	
 	for(var v = 0; v < pieces.length; v++) {
 		pieces[v].addEventListener("click", function() {
+			//clicked card's offset
+			var m = [this.offsetTop, this.offsetLeft];
+			
+			//has the game started and is this piece movable
 			if (shuff && $(this).hasClass("movablepiece")) {
-				var temp = [this.offsetTop, this.offsetLeft]
-				this.style.left = empty[1] + "px";
-				this.style.top = empty[0] + "px";
-				empty = temp;
+				
+				//is this piece in the same row as the empty tile
+				if (this.offsetTop == empty[0]) {
+					//number of tiles to be moved
+					var num = Math.abs((m[1] - empty[1]) / 100);
+					
+					
+					if (this.offsetLeft > empty[1]) {
+						for (var x= 1; x <= num; x++) {
+							for (var j = 0; j < pieces.length; j++) {
+								if (pieces[j].offsetTop == this.offsetTop && 
+								pieces[j].offsetLeft == empty[1]  + 100 ) {
+									swap(pieces[j]);
+									break;
+								}
+							}
+						}							
+					}
+					else if (this.offsetLeft < empty[1]) {
+						for (var x= 1; x <= num; x++) {
+							for (var j = 0; j < pieces.length; j++) {
+								if (pieces[j].offsetTop == this.offsetTop && 
+								pieces[j].offsetLeft == empty[1] - 100 ) {
+									swap(pieces[j]);
+									break;
+								}
+							}
+						}						
+					}
+				}
+				
+				//is this piece in the same row as the empty tile
+				else if (this.offsetLeft == empty[1]) {					
+					//number of tiles to be moved
+					var num = Math.abs((m[0] - empty[0]) / 100);
+					
+					if (this.offsetTop > empty[0]) {
+						for (var x= 1; x <= num; x++) {
+							for (var j = 0; j < pieces.length; j++) {
+								if (pieces[j].offsetLeft == this.offsetLeft && 
+								pieces[j].offsetTop == empty[0] + 100 ) {
+									swap(pieces[j]);
+									break;
+								}
+							}
+						}						
+					}
+					else if (this.offsetTop < empty[0]) {
+						for (var x= 1; x <= num; x++) {
+							for (var j = 0; j < pieces.length; j++) {
+								if (pieces[j].offsetLeft == this.offsetLeft && 
+								pieces[j].offsetTop == empty[0] - 100 ) {
+									swap(pieces[j]);
+									break;
+								}
+							}
+						}							
+					}					
+				}			
 				movable();
 			}
 		});
@@ -90,25 +149,20 @@ $(document).ready(function() {
 			}			
 		}
 		for(var v = 0; v < pieces.length; v++) {
-			if (pieces[v].offsetTop == empty[0] && pieces[v].offsetLeft - 100 == empty[1]) {
-				$(pieces[v]).addClass("movablepiece");
-			}
-			else if (pieces[v].offsetTop == empty[0] && pieces[v].offsetLeft + 100 == empty[1]) {
-				$(pieces[v]).addClass("movablepiece");
-			}
-			
-			if (pieces[v].offsetLeft == empty[1] && pieces[v].offsetTop - 100 == empty[0]) {
-				$(pieces[v]).addClass("movablepiece");
-			}
-			else if (pieces[v].offsetLeft == empty[1] && pieces[v].offsetTop + 100 == empty[0]) {
-				$(pieces[v]).addClass("movablepiece");
-			}
-			
-			/*
 			if (pieces[v].offsetTop == empty[0] || pieces[v].offsetLeft == empty[1]) {
 				$(pieces[v]).addClass("movablepiece");
 			}
-			*/
 		}
-	}	
+	}
+	
+	/*
+	Swaps tile with the empty tile 
+	*/	
+	function swap(tile) {
+		var temp = [tile.offsetTop, tile.offsetLeft];
+		tile.style.left = empty[1] + "px";
+		tile.style.top = empty[0] + "px";
+		empty = temp;		
+	}
+		
 });
