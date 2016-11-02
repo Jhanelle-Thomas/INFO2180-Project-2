@@ -28,7 +28,7 @@ $(document).ready(function() {
 	var empty = [300, 300];
 	
 	/*
-	Sets up change image button
+	Sets up change image area
 	*/
 	var changeImage = document.createElement("p");
 	changeImage.innerHTML = "Click any of the following images to change the background picture of the puzzle.";
@@ -36,10 +36,12 @@ $(document).ready(function() {
 	
 	var viewImages = document.createElement("div");
 	viewImages.id = "imageView";
-	btnInsert.appendChild(viewImages);
+	$("#overall").after(viewImages);
 	
+	//Add white border to tile numbers to make more visible on dark pictures
 	$(".puzzlepiece").css("text-shadow","-2px 0 white, 0 2px white, 2px 0 white, 0 -2px white");
 	
+	//Loads all background image choices
 	$("#imageView").append("<img class = 'photo' src='51badac1d51a714020.jpg' alt='' />");
 	$("#imageView").append("<img class = 'photo' src='34448.jpg' alt='' />");
 	$("#imageView").append("<img class = 'photo' src='77131.jpg' alt='' />");
@@ -120,8 +122,13 @@ $(document).ready(function() {
 	correct positions
 	*/
 	order();
+	var randBckGrnd = Math.floor(Math.random() * 12);
+	$(".puzzlepiece").css("background-image", "url(" + imgs[randBckGrnd].src + ")");
 	setBackground();
 	
+	/*
+	Changes background image of the puzzle when an image is clicked
+	*/
 	for (var i = 0; i < imgs.length; i++) {
 		imgs[i].onclick = function() {
 			$(".puzzlepiece").css("background-image", "url(" + this.src + ")");
