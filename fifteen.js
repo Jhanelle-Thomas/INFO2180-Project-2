@@ -69,7 +69,7 @@ $(document).ready(function() {
 	Sets up timer
 	*/
 	var time = document.createElement("p");
-	time.innerHTML = "0 : 0 : 0";	
+	time.innerHTML = "Time: 0 : 0 : 0";	
 	time.style.textAlign = "center";
 	time.style.fontSize = "25px";
 	time.style.color = "red";
@@ -112,7 +112,7 @@ $(document).ready(function() {
 	Randomly shuffles the position each tile should take
 	*/
 	function shuffle() {
-		for(var x = 0; x < 15; x++) {
+		for(var x = 0; x < 500; x++) {
 			movable();
 			var randomTile = Math.floor(Math.random() * 15);
 			if ($(pieces[randomTile]).hasClass("movablepiece")) {
@@ -146,7 +146,7 @@ $(document).ready(function() {
 		var randBckGrnd = Math.floor(Math.random() * 12);
 		$(".puzzlepiece").css("background-image", "url(" + imgs[randBckGrnd].src + ")");
 		setBackground();
-	}
+	};
 	
 	/*
 	Sets up the board, putting puzzle pieces and background images in the 
@@ -164,7 +164,7 @@ $(document).ready(function() {
 		imgs[i].onclick = function() {
 			$(".puzzlepiece").css("background-image", "url(" + this.src + ")");
 			setBackground();
-		}
+		};
 	}
 	
 	/*
@@ -304,8 +304,8 @@ $(document).ready(function() {
 	setInterval(function() {
 		if (shuff && !win) {
 			timer++;
-			time.innerHTML = "" + Math.floor((timer/(60 * 60)) % 24) + " : " 
-			+ Math.floor((timer/60) % 60) + " : " + Math.floor(timer % 60);
+			time.innerHTML = "Time: " + Math.floor((timer/(60 * 60)) % 24) + 
+			" : " + Math.floor((timer/60) % 60) + " : " + Math.floor(timer % 60);
 		}
 	},1000);
 	
