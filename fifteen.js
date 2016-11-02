@@ -28,6 +28,14 @@ $(document).ready(function() {
 	var empty = [300, 300];
 	
 	/*
+	Adds button to restart the game
+	*/
+	var restartbtn = document.createElement("BUTTON");
+	var label = document.createTextNode("Restart Game");
+	restartbtn.appendChild(label);
+	btnInsert.appendChild(restartbtn);
+	
+	/*
 	Sets up change image area
 	*/
 	var changeImage = document.createElement("p");
@@ -58,7 +66,7 @@ $(document).ready(function() {
 	var imgs = document.getElementsByClassName("photo");
 	
 	/*
-	Sert up timer
+	Sets up timer
 	*/
 	var time = document.createElement("p");
 	time.innerHTML = "0 : 0 : 0";	
@@ -67,6 +75,15 @@ $(document).ready(function() {
 	time.style.color = "red";
 	timeInsert.appendChild(time);
 	
+	/*
+	Sets op moves counter
+	*/
+	var move = document.createElement("p");
+	move.innerHTML = "Moves: 0";	
+	move.style.textAlign = "center";
+	move.style.fontSize = "25px";
+	move.style.color = "red";
+	timeInsert.appendChild(move);	
 	
 	/*
 	Assigns each puzzlepiece to a position based on coordinates given by the 
@@ -95,13 +112,13 @@ $(document).ready(function() {
 	Randomly shuffles the position each tile should take
 	*/
 	function shuffle() {
-		for(var x = 0; x < 600; x++) {
+		for(var x = 0; x < 500; x++) {
 			movable();
 			var randomTile = Math.floor(Math.random() * 15);
 			if ($(pieces[randomTile]).hasClass("movablepiece")) {
 				movepieces(pieces[randomTile]);
 			}			
-		}		
+		}
 	}
 	
 	/*
@@ -109,13 +126,27 @@ $(document).ready(function() {
 	is pressed
 	*/
 	shufflebutton.addEventListener("click", function() {
-		shuffle(positions);
-		shuff = true;
-		timer = 0;
-		moves = 0;
-		movable();
+		if (!win && !shuff) {
+			shuffle(positions);
+			shuff = true;
+			timer = 0;
+			moves = 0;
+			movable();
+		}
 	});
 	
+	/*
+	
+	*/
+	restartbtn.onclick = function() {
+		move.innerHTML = "Moves: 0";
+		time.innerHTML = "0 : 0 : 0";
+		win = false;
+		order();
+		var randBckGrnd = Math.floor(Math.random() * 12);
+		$(".puzzlepiece").css("background-image", "url(" + imgs[randBckGrnd].src + ")");
+		setBackground();
+	}
 	
 	/*
 	Sets up the board, putting puzzle pieces and background images in the 
@@ -143,12 +174,16 @@ $(document).ready(function() {
 		pieces[v].addEventListener("click", function() {			
 			//has the game started and is this piece movable
 			if (shuff && $(this).hasClass("movablepiece")) {
-				movepieces(this);								
-				movable();
-				solved();
+				movepieces(this);
+				solved();				
+				movable();				
 				moves++;
-			}
-			
+				move.innerHTML = "Moves: " + moves;
+				
+				if(win) {
+					won();
+				}
+			}	
 		});
 	}
 	
@@ -156,14 +191,16 @@ $(document).ready(function() {
 	Checks if the puzzle piece can be moved and adds the movablepiece class
 	*/
 	function movable() {
-		for(var v = 0; v < pieces.length; v++) {
-			if ($(pieces[v]).hasClass("movablepiece")) {
-				$(pieces[v]).removeClass( "movablepiece" );
-			}			
-		}
-		for(var v = 0; v < pieces.length; v++) {
-			if (pieces[v].offsetTop == empty[0] || pieces[v].offsetLeft == empty[1]) {
-				$(pieces[v]).addClass("movablepiece");
+		if (!win) {
+			for(var v = 0; v < pieces.length; v++) {
+				if ($(pieces[v]).hasClass("movablepiece")) {
+					$(pieces[v]).removeClass( "movablepiece" );
+				}			
+			}
+			for(var v = 0; v < pieces.length; v++) {
+				if (pieces[v].offsetTop == empty[0] || pieces[v].offsetLeft == empty[1]) {
+					$(pieces[v]).addClass("movablepiece");
+				}
 			}
 		}
 	}
@@ -249,8 +286,8 @@ $(document).ready(function() {
 	function solved() {
 		if (shuff) {
 			for (var x = 0; x < pieces.length; x++) {
-				var calc = ((pieces[x].offsetTop%100) * 4) + ((pieces[x].offsetLeft%100) + 1)
-				if (pieces[x].innerHTML != calc) {
+				var calc = ((pieces[x].offsetTop/100) * 4) + ((pieces[x].offsetLeft/100) + 1);
+				if (parseInt(pieces[x].innerHTML) != calc) {
 					win = false;
 					break;
 				}
@@ -262,14 +299,22 @@ $(document).ready(function() {
 	}
 	
 	/*
-	Increments timer by one second every second
+	Increments timer by one every second
 	*/
 	setInterval(function() {
 		if (shuff && !win) {
 			timer++;
 			time.innerHTML = "" + Math.floor((timer/(60 * 60)) % 24) + " : " 
 			+ Math.floor((timer/60) % 60) + " : " + Math.floor(timer % 60);
-		}		
+		}
 	},1000);
 	
+	/*
+	Implemented when the game is won
+	*/
+	function won() {
+		$(".puzzlepiece").css("background-image", "url(win.gif)");	
+		setBackground();
+		shuff = false;
+	}
 });
