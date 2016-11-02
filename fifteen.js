@@ -2,6 +2,7 @@
 Author: 620068361
 Date: 24 October 2016
 Feature: Multiple Background Images
+Note: Tested in Chrome and Edge
 */
 $(document).ready(function() {	
 	$("head").append("<link rel='stylesheet' type='text/css' href='imagearea.css' />");
@@ -146,7 +147,7 @@ $(document).ready(function() {
 	*/
 	restartbtn.onclick = function() {
 		move.innerHTML = "Moves: 0";
-		time.innerHTML = "0 : 0 : 0";
+		time.innerHTML = "Time: 0 : 0 : 0";
 		win = false;
 		shuff = false;
 		order();
