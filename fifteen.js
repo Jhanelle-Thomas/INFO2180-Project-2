@@ -2,8 +2,9 @@
 Author: 620068361
 Date: 24 October 2016
 Feature: Multiple Background Images
-Note: Tested in Chrome and Edge
+Note: Tested in Chrome
 */
+
 $(document).ready(function() {	
 	$("head").append("<link rel='stylesheet' type='text/css' href='imagearea.css' />");
 	
