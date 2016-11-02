@@ -1,5 +1,7 @@
 /**
-Multiple Background Images
+Author: 620068361
+Date: 24 October 2016
+Feature: Multiple Background Images
 */
 $(document).ready(function() {	
 	$("head").append("<link rel='stylesheet' type='text/css' href='imagearea.css' />");
@@ -39,6 +41,7 @@ $(document).ready(function() {
 			pieces[x].style.left = positions[x][1];
 			pieces[x].style.top = positions[x][0];
 		}
+		empty = [300, 300];
 	}
 	
 	/* 
@@ -57,7 +60,7 @@ $(document).ready(function() {
 	Randomly shuffles the position each tile should take
 	*/
 	function shuffle() {
-		for(var x = 0; x < 15; x++) {
+		for(var x = 0; x < 500; x++) {
 			movable();
 			var randomTile = Math.floor(Math.random() * 15);
 			if ($(pieces[randomTile]).hasClass("movablepiece")) {
