@@ -1,15 +1,22 @@
-$(document).ready(function() {
-	$("head").append("<link rel='stylesheet' id='extracss' href='modal.css' type='text/css' />");
+$(document).ready(function() {	
+	$("head").append("<link rel='stylesheet' type='text/css' href='modal.css' />");
 	
-	var shuff = false;
-	var win = false;
-	var timer;
-	var insertPoint;
-	var moves = 0;
-	var time = document.createElement("p");	
+	//Boolean value checks whether the game has started i.e. the board has been shuffled
+	var shuff = false;							
+	var win = false;	//Boolean value which tells if the game has been won
+	var timer;			//Keeps track of the number of seconds the game has run for
+	var moves;			//Number of moves in the game so far
+	
+	//Point where display time is inserted
+	var timeInsert = document.querySelector(".explanation");
+	//Point where changeImageButton is inserted
+	var btnInsert = document.getElementById("controls");
+	
 	$("#puzzlearea div").addClass("puzzlepiece");
 	var pieces = document.getElementsByClassName("puzzlepiece");
-	var shufflebutton = document.getElementById("shufflebutton")
+	
+	//button which shuffles the board to start or re-start the game
+	var shufflebutton = document.getElementById("shufflebutton"); 
 	
 	//Array which provides relevant positions for puzzlepieces	
 	var positions = [["0px", "0px"],["0px", "100px"],["0px","200px"],["0px", "300px"],
@@ -21,14 +28,43 @@ $(document).ready(function() {
 	var empty = [300, 300];
 	
 	/*
+	Sets up change image button
+	*/
+	var changeImage = document.createElement("p");
+	changeImage.innerHTML = "Click any of the following images to change the background picture of the puzzle.";
+	btnInsert.appendChild(changeImage);
+	
+	var viewImages = document.createElement("div");
+	viewImages.id = "imageView";
+	btnInsert.appendChild(viewImages);
+	
+	$(".puzzlepiece").css("text-shadow","-2px 0 white, 0 2px white, 2px 0 white, 0 -2px white");
+	
+	$("#imageView").append("<img class = 'photo' src='51badac1d51a714020.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='34448.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='77131.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='203095.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='adorn_by_escume-d72udht.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='background.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='background2.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='Backgrounds_12155.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='Backgrounds_13998.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='Backgrounds_14458.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='outsidethebox_fullpic_artwork.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='urban_rainbow_by_namora5-d3j3las.jpg' alt='' />");
+	
+	var imgs = document.getElementsByClassName("photo");
+	
+	/*
 	Sert up timer
 	*/
-	function setTimer() {
-		time.innerHTML = "0 : 0 : 0";
-		time.style.textAlign = "center";
-		time.style.fontSize = "16px";
-		time.style.color = "red";
-	}
+	var time = document.createElement("p");
+	time.innerHTML = "0 : 0 : 0";	
+	time.style.textAlign = "center";
+	time.style.fontSize = "25px";
+	time.style.color = "red";
+	timeInsert.appendChild(time);
+	
 	
 	/*
 	Assigns each puzzlepiece to a position based on coordinates given by the 
@@ -74,8 +110,10 @@ $(document).ready(function() {
 		shuffle(positions);
 		shuff = true;
 		timer = 0;
+		moves = 0;
 		movable();
 	});
+	
 	
 	/*
 	Sets up the board, putting puzzle pieces and background images in the 
@@ -84,7 +122,12 @@ $(document).ready(function() {
 	order();
 	setBackground();
 	
-	setTimer();
+	for (var i = 0; i < imgs.length; i++) {
+		imgs[i].onclick = function() {
+			$(".puzzlepiece").css("background-image", "url(" + this.src + ")");
+			setBackground();
+		}
+	}
 	
 	/*
 	Adds click event to all tiles
@@ -211,13 +254,14 @@ $(document).ready(function() {
 		}
 	}
 	
+	/*
+	Increments timer by one second every second
+	*/
 	setInterval(function() {
 		if (shuff && !win) {
 			timer++;
 			time.innerHTML = "" + Math.floor((timer/(60 * 60)) % 24) + " : " 
 			+ Math.floor((timer/60) % 60) + " : " + Math.floor(timer % 60);
-			insertPoint = document.querySelector(".explanation");
-			insertPoint.appendChild(time);
 		}		
 	},1000);
 	
