@@ -1,5 +1,5 @@
 $(document).ready(function() {	
-	$("head").append("<link rel='stylesheet' type='text/css' href='modal.css' />");
+	$("head").append("<link rel='stylesheet' type='text/css' href='imagearea.css' />");
 	
 	//Boolean value checks whether the game has started i.e. the board has been shuffled
 	var shuff = false;							
@@ -24,66 +24,8 @@ $(document).ready(function() {
 					 ["200px","0px"],["200px","100px"],["200px","200px"],["200px","300px"],
 					 ["300px","0px"],["300px","100px"],["300px","200px"]];
 					 
-	//Position of the empty tile (Always starts in the bottom right corner)
+	//Position of the empty tile
 	var empty = [300, 300];
-	
-	/*
-	Adds button to restart the game
-	*/
-	var restartbtn = document.createElement("BUTTON");
-	var label = document.createTextNode("Restart Game");
-	restartbtn.appendChild(label);
-	btnInsert.appendChild(restartbtn);
-	
-	/*
-	Sets up change image area
-	*/
-	var changeImage = document.createElement("p");
-	changeImage.innerHTML = "Click any of the following images to change the background picture of the puzzle.";
-	btnInsert.appendChild(changeImage);
-	
-	var viewImages = document.createElement("div");
-	viewImages.id = "imageView";
-	$("#overall").after(viewImages);
-	
-	//Add white border to tile numbers to make more visible on dark pictures
-	$(".puzzlepiece").css("text-shadow","-2px 0 white, 0 2px white, 2px 0 white, 0 -2px white");
-	
-	//Loads all background image choices
-	$("#imageView").append("<img class = 'photo' src='51badac1d51a714020.jpg' alt='' />");
-	$("#imageView").append("<img class = 'photo' src='34448.jpg' alt='' />");
-	$("#imageView").append("<img class = 'photo' src='77131.jpg' alt='' />");
-	$("#imageView").append("<img class = 'photo' src='203095.jpg' alt='' />");
-	$("#imageView").append("<img class = 'photo' src='adorn_by_escume-d72udht.jpg' alt='' />");
-	$("#imageView").append("<img class = 'photo' src='background.jpg' alt='' />");
-	$("#imageView").append("<img class = 'photo' src='background2.jpg' alt='' />");
-	$("#imageView").append("<img class = 'photo' src='Backgrounds_12155.jpg' alt='' />");
-	$("#imageView").append("<img class = 'photo' src='Backgrounds_13998.jpg' alt='' />");
-	$("#imageView").append("<img class = 'photo' src='Backgrounds_14458.jpg' alt='' />");
-	$("#imageView").append("<img class = 'photo' src='outsidethebox_fullpic_artwork.jpg' alt='' />");
-	$("#imageView").append("<img class = 'photo' src='urban_rainbow_by_namora5-d3j3las.jpg' alt='' />");
-	
-	var imgs = document.getElementsByClassName("photo");
-	
-	/*
-	Sets up timer
-	*/
-	var time = document.createElement("p");
-	time.innerHTML = "Time: 0 : 0 : 0";	
-	time.style.textAlign = "center";
-	time.style.fontSize = "25px";
-	time.style.color = "red";
-	timeInsert.appendChild(time);
-	
-	/*
-	Sets op moves counter
-	*/
-	var move = document.createElement("p");
-	move.innerHTML = "Moves: 0";	
-	move.style.textAlign = "center";
-	move.style.fontSize = "25px";
-	move.style.color = "red";
-	timeInsert.appendChild(move);	
 	
 	/*
 	Assigns each puzzlepiece to a position based on coordinates given by the 
@@ -122,6 +64,64 @@ $(document).ready(function() {
 	}
 	
 	/*
+	Adds button to restart the game
+	*/
+	var restartbtn = document.createElement("BUTTON");
+	var label = document.createTextNode("Restart Game");
+	restartbtn.appendChild(label);
+	btnInsert.appendChild(restartbtn);
+	
+	/*
+	Sets up timer
+	*/
+	var time = document.createElement("p");
+	time.innerHTML = "Time: 0 : 0 : 0";	
+	time.style.textAlign = "center";
+	time.style.fontSize = "25px";
+	time.style.color = "red";
+	timeInsert.appendChild(time);
+	
+	/*
+	Sets op moves counter
+	*/
+	var move = document.createElement("p");
+	move.innerHTML = "Moves: 0";	
+	move.style.textAlign = "center";
+	move.style.fontSize = "25px";
+	move.style.color = "red";
+	timeInsert.appendChild(move);
+	
+	/*
+	Sets up change image area
+	*/
+	var changeImage = document.createElement("p");
+	changeImage.innerHTML = "Click any of the following images to change the background picture of the puzzle.";
+	btnInsert.appendChild(changeImage);
+	
+	var viewImages = document.createElement("div");
+	viewImages.id = "imageView";
+	$("#overall").after(viewImages);
+	
+	//Add white border to tile numbers to make more visible on dark pictures
+	$(".puzzlepiece").css("text-shadow","-2px 0 white, 0 2px white, 2px 0 white, 0 -2px white");
+	
+	//Loads all background image choices
+	$("#imageView").append("<img class = 'photo' src='51badac1d51a714020.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='34448.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='77131.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='203095.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='adorn_by_escume-d72udht.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='background.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='background2.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='Backgrounds_12155.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='Backgrounds_13998.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='Backgrounds_14458.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='outsidethebox_fullpic_artwork.jpg' alt='' />");
+	$("#imageView").append("<img class = 'photo' src='urban_rainbow_by_namora5-d3j3las.jpg' alt='' />");
+	
+	var imgs = document.getElementsByClassName("photo");	
+	
+	/*
 	Reorganizes the location of the puzzle pieces when the button 
 	is pressed
 	*/
@@ -136,17 +136,30 @@ $(document).ready(function() {
 	});
 	
 	/*
-	
+	Resets the game when the button is pressed
 	*/
 	restartbtn.onclick = function() {
 		move.innerHTML = "Moves: 0";
 		time.innerHTML = "0 : 0 : 0";
 		win = false;
+		shuff = false;
 		order();
 		var randBckGrnd = Math.floor(Math.random() * 12);
 		$(".puzzlepiece").css("background-image", "url(" + imgs[randBckGrnd].src + ")");
 		setBackground();
 	};
+	
+	/*
+	Changes background image of the puzzle when an image is clicked
+	*/
+	for (var i = 0; i < imgs.length; i++) {
+		imgs[i].onclick = function() {
+			if (!win) {
+				$(".puzzlepiece").css("background-image", "url(" + this.src + ")");
+				setBackground();
+			}
+		};
+	}
 	
 	/*
 	Sets up the board, putting puzzle pieces and background images in the 
@@ -156,16 +169,6 @@ $(document).ready(function() {
 	var randBckGrnd = Math.floor(Math.random() * 12);
 	$(".puzzlepiece").css("background-image", "url(" + imgs[randBckGrnd].src + ")");
 	setBackground();
-	
-	/*
-	Changes background image of the puzzle when an image is clicked
-	*/
-	for (var i = 0; i < imgs.length; i++) {
-		imgs[i].onclick = function() {
-			$(".puzzlepiece").css("background-image", "url(" + this.src + ")");
-			setBackground();
-		};
-	}
 	
 	/*
 	Adds click event to all tiles

@@ -1,0 +1,13 @@
+.photo {
+	display: inline-block;
+	height: 100px;
+	width: 100px;
+	padding: 2px;
+}
+
+#imageView {
+	padding: 5px;
+	width: 500px;
+	margin: auto;
+}
+
