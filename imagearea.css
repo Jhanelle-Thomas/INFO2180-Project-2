@@ -3,11 +3,13 @@
 	height: 100px;
 	width: 100px;
 	padding: 2px;
+	border: 2px solid black;
 }
 
 #imageView {
 	padding: 5px;
-	width: 500px;
+	width: 433px;
 	margin: auto;
+	border: 2px solid black;	
 }
 
