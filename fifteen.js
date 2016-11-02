@@ -1,3 +1,6 @@
+/**
+Multiple Background Images
+*/
 $(document).ready(function() {	
 	$("head").append("<link rel='stylesheet' type='text/css' href='imagearea.css' />");
 	
@@ -54,7 +57,7 @@ $(document).ready(function() {
 	Randomly shuffles the position each tile should take
 	*/
 	function shuffle() {
-		for(var x = 0; x < 500; x++) {
+		for(var x = 0; x < 15; x++) {
 			movable();
 			var randomTile = Math.floor(Math.random() * 15);
 			if ($(pieces[randomTile]).hasClass("movablepiece")) {
