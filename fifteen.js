@@ -1,5 +1,12 @@
 $(document).ready(function() {
+	$("head").append("<link rel='stylesheet' id='extracss' href='modal.css' type='text/css' />");
+	
 	var shuff = false;
+	var win = false;
+	var timer;
+	var insertPoint;
+	var moves = 0;
+	var time = document.createElement("p");	
 	$("#puzzlearea div").addClass("puzzlepiece");
 	var pieces = document.getElementsByClassName("puzzlepiece");
 	var shufflebutton = document.getElementById("shufflebutton")
@@ -12,6 +19,16 @@ $(document).ready(function() {
 					 
 	//Position of the empty tile (Always starts in the bottom right corner)
 	var empty = [300, 300];
+	
+	/*
+	Sert up timer
+	*/
+	function setTimer() {
+		time.innerHTML = "0 : 0 : 0";
+		time.style.textAlign = "center";
+		time.style.fontSize = "16px";
+		time.style.color = "red";
+	}
 	
 	/*
 	Assigns each puzzlepiece to a position based on coordinates given by the 
@@ -39,25 +56,24 @@ $(document).ready(function() {
 	/*
 	Randomly shuffles the position each tile should take
 	*/
-	function shuffle(array) {
-		for (var i = array.length - 1; i > 0; i--) {
-			var j = Math.floor(Math.random() * (i + 1));
-			var temp = array[i];
-			array[i] = array[j];
-			array[j] = temp;
-		}
-		return array;
+	function shuffle() {
+		for(var x = 0; x < 600; x++) {
+			movable();
+			var randomTile = Math.floor(Math.random() * 15);
+			if ($(pieces[randomTile]).hasClass("movablepiece")) {
+				movepieces(pieces[randomTile]);
+			}			
+		}		
 	}
 	
 	/*
-	Randomly reorganizes the location of the puzzle pieces when the button 
+	Reorganizes the location of the puzzle pieces when the button 
 	is pressed
 	*/
 	shufflebutton.addEventListener("click", function() {
-		positions = shuffle(positions);
-		order();
+		shuffle(positions);
 		shuff = true;
-		empty = [300, 300];
+		timer = 0;
 		movable();
 	});
 	
@@ -68,74 +84,21 @@ $(document).ready(function() {
 	order();
 	setBackground();
 	
+	setTimer();
+	
+	/*
+	Adds click event to all tiles
+	*/
 	for(var v = 0; v < pieces.length; v++) {
-		pieces[v].addEventListener("click", function() {
-			//clicked card's offset
-			var m = [this.offsetTop, this.offsetLeft];
-			
+		pieces[v].addEventListener("click", function() {			
 			//has the game started and is this piece movable
 			if (shuff && $(this).hasClass("movablepiece")) {
-				
-				//is this piece in the same row as the empty tile
-				if (this.offsetTop == empty[0]) {
-					//number of tiles to be moved
-					var num = Math.abs((m[1] - empty[1]) / 100);
-					
-					
-					if (this.offsetLeft > empty[1]) {
-						for (var x= 1; x <= num; x++) {
-							for (var j = 0; j < pieces.length; j++) {
-								if (pieces[j].offsetTop == this.offsetTop && 
-								pieces[j].offsetLeft == empty[1]  + 100 ) {
-									swap(pieces[j]);
-									break;
-								}
-							}
-						}							
-					}
-					else if (this.offsetLeft < empty[1]) {
-						for (var x= 1; x <= num; x++) {
-							for (var j = 0; j < pieces.length; j++) {
-								if (pieces[j].offsetTop == this.offsetTop && 
-								pieces[j].offsetLeft == empty[1] - 100 ) {
-									swap(pieces[j]);
-									break;
-								}
-							}
-						}						
-					}
-				}
-				
-				//is this piece in the same row as the empty tile
-				else if (this.offsetLeft == empty[1]) {					
-					//number of tiles to be moved
-					var num = Math.abs((m[0] - empty[0]) / 100);
-					
-					if (this.offsetTop > empty[0]) {
-						for (var x= 1; x <= num; x++) {
-							for (var j = 0; j < pieces.length; j++) {
-								if (pieces[j].offsetLeft == this.offsetLeft && 
-								pieces[j].offsetTop == empty[0] + 100 ) {
-									swap(pieces[j]);
-									break;
-								}
-							}
-						}						
-					}
-					else if (this.offsetTop < empty[0]) {
-						for (var x= 1; x <= num; x++) {
-							for (var j = 0; j < pieces.length; j++) {
-								if (pieces[j].offsetLeft == this.offsetLeft && 
-								pieces[j].offsetTop == empty[0] - 100 ) {
-									swap(pieces[j]);
-									break;
-								}
-							}
-						}							
-					}					
-				}			
+				movepieces(this);								
 				movable();
+				solved();
+				moves++;
 			}
+			
 		});
 	}
 	
@@ -162,7 +125,100 @@ $(document).ready(function() {
 		var temp = [tile.offsetTop, tile.offsetLeft];
 		tile.style.left = empty[1] + "px";
 		tile.style.top = empty[0] + "px";
-		empty = temp;		
+		empty = temp;				
+	}
+	
+	/*
+	Shifts all the pieces between 'tile' and the empty space towards the empty space
+	*/
+	function movepieces(tile) {
+		//clicked card's offset
+		var m = [tile.offsetTop, tile.offsetLeft];				
+		//is this piece in the same row as the empty tile
+		if (tile.offsetTop == empty[0]) {
+			//number of tiles to be moved
+			var num = Math.abs((m[1] - empty[1]) / 100);					
+					
+			if (tile.offsetLeft > empty[1]) {
+				for (var x= 1; x <= num; x++) {
+					for (var j = 0; j < pieces.length; j++) {
+						if (pieces[j].offsetTop == tile.offsetTop && 
+						pieces[j].offsetLeft == empty[1]  + 100 ) {
+							swap(pieces[j]);
+							break;
+						}
+					}
+				}							
+			}
+			else if (tile.offsetLeft < empty[1]) {
+				for (var x= 1; x <= num; x++) {
+					for (var j = 0; j < pieces.length; j++) {
+						if (pieces[j].offsetTop == tile.offsetTop && 
+						pieces[j].offsetLeft == empty[1] - 100 ) {
+							swap(pieces[j]);
+							break;
+						}
+					}
+				}						
+			}
+		}
+				
+		//is this piece in the same row as the empty tile
+		else if (tile.offsetLeft == empty[1]) {					
+			//number of tiles to be moved
+			var num = Math.abs((m[0] - empty[0]) / 100);
+			
+			if (tile.offsetTop > empty[0]) {
+				for (var x= 1; x <= num; x++) {
+					for (var j = 0; j < pieces.length; j++) {
+						if (pieces[j].offsetLeft == tile.offsetLeft && 
+						pieces[j].offsetTop == empty[0] + 100 ) {
+							swap(pieces[j]);
+							break;
+						}
+					}
+				}						
+			}
+			else if (tile.offsetTop < empty[0]) {
+				for (var x= 1; x <= num; x++) {
+					for (var j = 0; j < pieces.length; j++) {
+						if (pieces[j].offsetLeft == tile.offsetLeft && 
+						pieces[j].offsetTop == empty[0] - 100 ) {
+							swap(pieces[j]);
+							break;
+						}
+					}
+				}							
+			}					
+		}		
 	}
 		
+	/*
+	Checks if the game is won
+	*/
+	function solved() {
+		if (shuff) {
+			for (var x = 0; x < pieces.length; x++) {
+				var calc = ((pieces[x].offsetTop%100) * 4) + ((pieces[x].offsetLeft%100) + 1)
+				if (pieces[x].innerHTML != calc) {
+					win = false;
+					break;
+				}
+				else {
+					win =  true;
+				}
+			}
+		}
+	}
+	
+	setInterval(function() {
+		if (shuff && !win) {
+			timer++;
+			time.innerHTML = "" + Math.floor((timer/(60 * 60)) % 24) + " : " 
+			+ Math.floor((timer/60) % 60) + " : " + Math.floor(timer % 60);
+			insertPoint = document.querySelector(".explanation");
+			insertPoint.appendChild(time);
+		}		
+	},1000);
+	
 });
