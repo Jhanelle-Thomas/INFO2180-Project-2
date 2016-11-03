@@ -158,7 +158,7 @@ $(document).ready(function() {
 			var randBckGrnd = Math.floor(Math.random() * 12);
 			$(".puzzlepiece").css("background-image", "url(" + imgs[randBckGrnd].src + ")");
 			setBackground();
-			movable();
+			removeMovable();
 		}
 	};
 	
@@ -208,17 +208,24 @@ $(document).ready(function() {
 	*/
 	function movable() {
 		if (!win) {
-			for(var v = 0; v < pieces.length; v++) {
-				if ($(pieces[v]).hasClass("movablepiece")) {
-					$(pieces[v]).removeClass( "movablepiece" );
-				}			
-			}
+			removeMovable();
 			for(var v = 0; v < pieces.length; v++) {
 				if (pieces[v].offsetTop == empty[0] || pieces[v].offsetLeft == empty[1]) {
 					$(pieces[v]).addClass("movablepiece");
 				}
 			}
 		}
+	}
+	
+	/*
+	Removes movablepiece class from pieces
+	*/
+	function removeMovable() {
+		for(var v = 0; v < pieces.length; v++) {
+				if ($(pieces[v]).hasClass("movablepiece")) {
+					$(pieces[v]).removeClass( "movablepiece" );
+				}			
+			}		
 	}
 	
 	/*
