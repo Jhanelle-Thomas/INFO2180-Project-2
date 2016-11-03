@@ -148,18 +148,16 @@ $(document).ready(function() {
 	Resets the game when the button is pressed
 	*/
 	restartbtn.onclick = function() {
-		if (shuff) {
-			move.innerHTML = "Moves: 0";
-			time.innerHTML = "Time: 0 : 0 : 0";
-			win = false;
-			shuff = false;
-			order();
-			empty = [300, 300];
-			var randBckGrnd = Math.floor(Math.random() * 12);
-			$(".puzzlepiece").css("background-image", "url(" + imgs[randBckGrnd].src + ")");
-			setBackground();
-			removeMovable();
-		}
+		move.innerHTML = "Moves: 0";
+		time.innerHTML = "Time: 0 : 0 : 0";
+		win = false;
+		shuff = false;
+		order();
+		empty = [300, 300];
+		var randBckGrnd = Math.floor(Math.random() * 12);
+		$(".puzzlepiece").css("background-image", "url(" + imgs[randBckGrnd].src + ")");
+		setBackground();
+		removeMovable();
 	};
 	
 	/*
