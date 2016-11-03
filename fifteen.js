@@ -41,7 +41,6 @@ $(document).ready(function() {
 			pieces[x].style.left = positions[x][1];
 			pieces[x].style.top = positions[x][0];
 		}
-		empty = [300, 300];
 	}
 	
 	/* 
@@ -138,9 +137,9 @@ $(document).ready(function() {
 	shufflebutton.addEventListener("click", function() {
 		if (!win && !shuff) {
 			shuffle(positions);
-			shuff = true;
 			timer = 0;
 			moves = 0;
+			shuff = true;
 			movable();
 		}
 	});
@@ -149,14 +148,18 @@ $(document).ready(function() {
 	Resets the game when the button is pressed
 	*/
 	restartbtn.onclick = function() {
-		move.innerHTML = "Moves: 0";
-		time.innerHTML = "Time: 0 : 0 : 0";
-		win = false;
-		shuff = false;
-		order();
-		var randBckGrnd = Math.floor(Math.random() * 12);
-		$(".puzzlepiece").css("background-image", "url(" + imgs[randBckGrnd].src + ")");
-		setBackground();
+		if (shuff) {
+			move.innerHTML = "Moves: 0";
+			time.innerHTML = "Time: 0 : 0 : 0";
+			win = false;
+			shuff = false;
+			order();
+			empty = [300, 300];
+			var randBckGrnd = Math.floor(Math.random() * 12);
+			$(".puzzlepiece").css("background-image", "url(" + imgs[randBckGrnd].src + ")");
+			setBackground();
+			movable();
+		}
 	};
 	
 	/*
@@ -223,9 +226,10 @@ $(document).ready(function() {
 	*/	
 	function swap(tile) {
 		var temp = [tile.offsetTop, tile.offsetLeft];
+		//$(tile).animate({top: empty[0], left: empty[1]}, "fast");			//causes shuffle to run longer than one second
 		tile.style.left = empty[1] + "px";
 		tile.style.top = empty[0] + "px";
-		empty = temp;				
+		empty = temp;		
 	}
 	
 	/*
