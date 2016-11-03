@@ -5,9 +5,7 @@ Feature: Multiple Background Images
 Note: Tested in Chrome
 */
 
-$(document).ready(function() {	
-	$("head").append("<link rel='stylesheet' type='text/css' href='imagearea.css' />");
-	
+$(document).ready(function() {		
 	//Boolean value checks whether the game has started i.e. the board has been shuffled
 	var shuff = false;							
 	var win = false;	//Boolean value which tells if the game has been won
@@ -62,7 +60,7 @@ $(document).ready(function() {
 	Randomly shuffles the position each tile should take
 	*/
 	function shuffle() {
-		for(var x = 0; x < 300; x++) {
+		for(var x = 0; x < 500; x++) {
 			movable();
 			var randomTile = Math.floor(Math.random() * 15);
 			if ($(pieces[randomTile]).hasClass("movablepiece")) {
@@ -127,7 +125,11 @@ $(document).ready(function() {
 	$("#imageView").append("<img class = 'photo' src='outsidethebox_fullpic_artwork.jpg' alt='' />");
 	$("#imageView").append("<img class = 'photo' src='urban_rainbow_by_namora5-d3j3las.jpg' alt='' />");
 	
-	var imgs = document.getElementsByClassName("photo");	
+	var imgs = document.getElementsByClassName("photo");
+
+	$(".photo").css({"display":"inline-block", "height":"100px","width":"100px", "padding":"2px", "border":"2px solid black"});
+	$("#imageView").css({"width":"433px", "padding":"5px", "border":"2px solid black", "margin":"auto"});
+
 	
 	/*
 	Reorganizes the location of the puzzle pieces when the button 
